@@ -46,14 +46,14 @@ class gamestate():
             #print('No win')
             self.move_count += 1
         
-        #print(self.board[::-1,])
+        
         
     def win(self,player):
         "Checks the current board to see if the player has won"
     
         # horizontal win
         for row in range(self.dimensions[0]):
-            count = 0
+            count = 0 # reset count
             for col in range(self.dimensions[1]):
                 
                 if count + self.dimensions[1] - col < 4: 
@@ -71,7 +71,7 @@ class gamestate():
                     
         # vertical win
         for col in range(self.dimensions[1]):
-            count = 0
+            count = 0 # reset count
             for row in range(self.dimensions[0]):
             
                 if count + self.dimensions[0] - row < 4: 
@@ -88,8 +88,10 @@ class gamestate():
                     return True
                 
                 
-        # diagonal win (Right to left)
-        aval_r_start = self.dimensions[0] - (4 - 1)
+        # == diagonal win (Right to left) ==
+        
+        # list of all starting index for diagonal search
+        aval_r_start = self.dimensions[0] - (4 - 1) 
         aval_c_start = self.dimensions[1] - (4 - 1)
         aval_start = []
         for r in range(aval_r_start):
@@ -115,7 +117,9 @@ class gamestate():
                     return True
         
         
-        # diagonal win 2 (Left to Right)
+        # == diagonal win 2 (Left to Right) == 
+        
+        # list of all starting index for diagonal search
         aval_r_start = self.dimensions[0] - (4 - 1)
         aval_c_start = self.dimensions[1] - (4 - 1)
         aval_start = []

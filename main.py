@@ -73,9 +73,9 @@ def main():
                         draw_board_states(screen,gs)
                         
                         if gs.game_over:
-                            
+                            # draw O
                             draw_win(screen,gs.winner)
-                            #running = False
+                            
                 
                 
                 
@@ -101,17 +101,14 @@ def draw_ribben(screen,gs):
     p.draw.rect(screen,'Black',p.Rect(0.32 * width,0,2/5 * width ,top_rib),2) # statusboarder
     p.draw.rect(screen,'Black',p.Rect(0,0,width,top_rib),4) # boarder
     
-    
-    
     # next turn 
     turn_text = ribben_font.render('Turn:', False, (255, 255, 255))
     text_rect = turn_text.get_rect(center=(200/2, top_rib/2))
     screen.blit(turn_text,text_rect)
-    # draw circle of move
+    # draw circle colour of player's turn
     p.draw.circle(screen, 'Black', (220,top_rib/2), int(0.6*(top_rib/2)+5),5)
     colour = 'red' if gs.move_count % 2 == 0 else 'yellow'
     p.draw.circle(screen, p.Color(colour), (220,top_rib/2), int(0.6*(top_rib/2)))
-    
     
     # move tracker 
     move_text = move_font.render(f'Move:  {gs.move_count+1}', True, (255, 255, 255))
@@ -122,7 +119,7 @@ def draw_ribben(screen,gs):
 
 button_colour = '#888888'
 def draw_buttons(screen):  
-    # undo button  (width -110, 10, width-10 , top_rib/2 ) (x1, y1, x2, y2)
+    # undo button:  (width -110, 10, width-10 , top_rib/2 ) (x1, y1, x2, y2)
     undo_size = 80
     p.draw.rect(screen,button_colour,p.Rect(width- undo_size-10, 10 ,undo_size, top_rib/2 -10))
     p.draw.rect(screen,'Black',p.Rect(width- undo_size-10, 10 ,undo_size, top_rib/2 -10),2) 
@@ -131,7 +128,7 @@ def draw_buttons(screen):
     text_rect = undo_text.get_rect(center=(width - undo_size/2 -10, top_rib/4 + 5))
     screen.blit(undo_text,text_rect)
     
-    # new game (width -235, 10, width - 100, top_rib/2 )
+    # new game: (width -235, 10, width - 100, top_rib/2 )
     newg_size = 135
     p.draw.rect(screen,button_colour,p.Rect(width-90- newg_size-10, 10 ,newg_size, top_rib/2 -10))
     p.draw.rect(screen,'Black',p.Rect(width-90- newg_size-10, 10 ,newg_size, top_rib/2 -10),2) 
@@ -182,14 +179,6 @@ def draw_counters(screen,gs):
 
 
 game_over_font = p.font.SysFont('Arial', 72)  
-
-# def draw_win(screen,winner):
-#     p.draw.rect(screen,'Black', p.Rect(192/2,(height-top_rib)/2,width-192, 256)) # outter retangle
-#     p.draw.rect(screen,"White", p.Rect(192/2 + 8,(height-top_rib)/2 +8 ,width-192-16, 256 -16)) # inner retangle
-    
-#     end_text = end_screen_font.render(winner.title() + ' wins!', True, (0, 0, 0))
-#     screen.blit(end_text,(192/2 + 32,(height-top_rib)/2 + 100))
-
 def draw_win(screen,winner):
     win_text = game_over_font.render(f'{winner.title()} wins!', False, (255, 255, 255))
     text_rect = win_text.get_rect(center=(0.52 * width, top_rib/2))
