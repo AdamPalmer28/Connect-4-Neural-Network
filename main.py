@@ -55,8 +55,9 @@ def main():
                     if (loc_y >= 10) and (loc_y <= top_rib/2):
                         # undo button  (width -110, 10, width-10 , top_rib/2 ) 
                         if (loc_x >= width -110) and (loc_x <= width-10):
-                            print('Undo')
-                            pass
+                            gs.undo_move()
+                            draw_board_states(screen,gs) # update GUI
+                            
                         # new game (width -235, 10, width - 100, top_rib/2 )
                         elif (loc_x >= width -235) and (loc_x <= width-100):
                             main()
@@ -73,8 +74,13 @@ def main():
                         draw_board_states(screen,gs)
                         
                         if gs.game_over:
-                            # draw O
-                            draw_win(screen,gs.winner)
+                           
+                            if gs.win:
+                                # win
+                                draw_win(screen,gs.winner)
+                            else:
+                                # draw 
+                                draw_draw(screen)
                             
                 
                 
@@ -183,6 +189,11 @@ def draw_win(screen,winner):
     win_text = game_over_font.render(f'{winner.title()} wins!', False, (255, 255, 255))
     text_rect = win_text.get_rect(center=(0.52 * width, top_rib/2))
     screen.blit(win_text,text_rect)
+    
+def draw_draw(screen):
+    draw_text = game_over_font.render('Draw', False, (255, 255, 255))
+    text_rect = draw_text.get_rect(center=(0.52 * width, top_rib/2))
+    screen.blit(draw_text,text_rect)
     
     
 #%% __main__

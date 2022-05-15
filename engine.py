@@ -16,6 +16,8 @@ class gamestate():
         self.move_count = 0
         self.game_over = False
         
+        self.move_list = []
+        
     def make_move(self,col):
         # checks move is legal
         assert col in list(range(7)), "Col must be 0 to 6"
@@ -30,23 +32,40 @@ class gamestate():
             return False
         else:
             min_index = min(col_empty)
-            self.update_gs(min_index,col)
+            self.move_list.append(col) # move order
+            self.update_gs(min_index,col) # update relevant attributes 
             return True
 
     def update_gs(self,row,col):
         # move updates
         counter = (1 if self.move_count % 2 == 0 else -1)
         self.board[row,col] = counter
-
+        
         if self.win(counter):
-            #print("win")
+            # win detected
             self.game_over = True
+            self.win = True
             self.winner = ('Red' if counter == 1 else 'Yellow')
         else:
-            #print('No win')
+            # no win
             self.move_count += 1
+            
+            if self.move_count > 7*6 - 1:
+                # draw?
+                self.game_over = True
+                self.win = False
         
+    def undo_move(self):
+        # undos last move from move_list
+        last_col = self.move_list[-1]
+        self.move_list.pop()
         
+        col_empty = np.where(self.board[:,last_col] != 0)[0]
+        last_row = max(col_empty)
+        
+        self.board[last_row,last_col] = 0
+        self.move_count -= 1
+        pass
         
     def win(self,player):
         "Checks the current board to see if the player has won"
