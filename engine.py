@@ -17,9 +17,10 @@ class gamestate():
         self.game_over = False
         
         self.move_list = []
+      
         
-    def make_move(self,col):
-        # checks move is legal
+    def make_move(self, col: int) -> bool:
+        "Checks move is legal"
         assert col in list(range(7)), "Col must be 0 to 6"
         
         selected = self.board[:,col]
@@ -36,8 +37,10 @@ class gamestate():
             self.update_gs(min_index,col) # update relevant attributes 
             return True
 
-    def update_gs(self,row,col):
-        # move updates
+
+    def update_gs(self, row: int, col: int) -> None:
+        "Updates relevant class attributes following a move"
+        
         counter = (1 if self.move_count % 2 == 0 else -1)
         self.board[row,col] = counter
         
@@ -55,8 +58,10 @@ class gamestate():
                 self.game_over = True
                 self.win = False
         
-    def undo_move(self):
-        # undos last move from move_list
+        
+    def undo_move(self) -> None:
+        "Undos last move from move_list"
+        
         last_col = self.move_list[-1]
         self.move_list.pop()
         
@@ -65,12 +70,12 @@ class gamestate():
         
         self.board[last_row,last_col] = 0
         self.move_count -= 1
-        pass
         
-    def win(self,player):
+        
+    def win(self, player: int) -> bool:
         "Checks the current board to see if the player has won"
     
-        # horizontal win
+        # === Horizontal win ===
         for row in range(self.dimensions[0]):
             count = 0 # reset count
             for col in range(self.dimensions[1]):
@@ -88,13 +93,13 @@ class gamestate():
                 if count >= 4: # win
                     return True
                     
-        # vertical win
+        # === Vertical win ===
         for col in range(self.dimensions[1]):
             count = 0 # reset count
             for row in range(self.dimensions[0]):
             
                 if count + self.dimensions[0] - row < 4: 
-                    # win not possible
+                    # win not possible -> early exit
                     break
                 
                 # counter
@@ -107,7 +112,7 @@ class gamestate():
                     return True
                 
                 
-        # == diagonal win (Right to left) ==
+        # === diagonal win (Right to left) ===
         
         # list of all starting index for diagonal search
         aval_r_start = self.dimensions[0] - (4 - 1) 
@@ -136,7 +141,7 @@ class gamestate():
                     return True
         
         
-        # == diagonal win 2 (Left to Right) == 
+        # === diagonal win (2) (Left to Right) === 
         
         # list of all starting index for diagonal search
         aval_r_start = self.dimensions[0] - (4 - 1)
@@ -172,7 +177,7 @@ if __name__ == '__main__':
     # for back testing
     gs = gamestate()
     
-    ref = np.ndarray(gs.board.shape,dtype=object) 
+    ref = np.ndarray(gs.board.shape, dtype=object) 
     for r in range(ref.shape[0]):
         for c in range(ref.shape[1]):
             ref[r,c] = (r,c)
